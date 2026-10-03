@@ -1,0 +1,48 @@
+const fs = require('fs');
+const path = require('path');
+
+const html = `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Explore | Nexus AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body class="app-shell explore-shell">
+    <header class="topbar app-topbar">
+      <div>
+        <p class="eyebrow">Discover</p>
+        <h1>Explore bots</h1>
+      </div>
+      <div class="top-actions">
+        <a class="ghost-btn" href="/dashboard.html">Dashboard</a>
+        <a class="primary-btn" href="/dashboard.html">Build a bot</a>
+      </div>
+    </header>
+
+    <section class="toolbar glass-panel">
+      <input id="searchInput" type="text" placeholder="Search bots, creators, or tags" />
+      <select id="categoryFilter">
+        <option value="all">All categories</option>
+        <option value="community">Community</option>
+        <option value="developer">Developer</option>
+        <option value="roleplay">Roleplay</option>
+      </select>
+      <button class="primary-btn" id="searchBtn">Search</button>
+    </section>
+
+    <section id="publicBots" class="public-bot-grid"></section>
+
+    <script src="/js/main.js"></script>
+    <script src="/js/explore.js"></script>
+  </body>
+</html>
+`;
+
+fs.writeFileSync(path.join(__dirname, '../public/explore.html'), html);
+
+console.log('Explore page generated:', path.join(__dirname, '../public/explore.html'));

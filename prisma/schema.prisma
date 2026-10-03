@@ -1,0 +1,283 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String          @id @default(uuid())
+  discordId        String?         @unique
+  username         String
+  email            String?
+  avatar           String?
+  banner           String?
+  isAdmin          Boolean         @default(false)
+  role             String          @default("regular")
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  bots             Bot[]
+  apiKeys          ApiKey[]
+  subscriptions    Subscription[]
+  usage            Usage[]
+  logs             LogEntry[]
+  servers          DiscordServer[]
+}
+
+model Bot {
+  id               String          @id @default(uuid())
+  ownerId          String
+  owner            User            @relation(fields: [ownerId], references: [id])
+  name             String
+  username         String
+  avatar           String?
+  banner           String?
+  description      String?
+  status           String          @default("draft")
+  accentColor      String?
+  isPublic         Boolean         @default(false)
+  isDeleted        Boolean         @default(false)
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  config           BotConfig?
+  personality      Personality?
+  memories         Memory[]
+  conversations   Conversation[]
+  commands         Command[]
+  tools            Tool[]
+  deployments      Deployment[]
+  servers          BotServer[]
+  analytics        Analytics[]
+  logs             LogEntry[]
+}
+
+model BotConfig {
+  id                 String   @id @default(uuid())
+  botId              String   @unique
+  bot                Bot      @relation(fields: [botId], references: [id])
+  aiProvider         String   @default("openai")
+  model             String   @default("gpt-4o-mini")
+  temperature       Float    @default(0.7)
+  maxTokens         Int      @default(1200)
+  contextWindow     Int      @default(8192)
+  systemPrompt      String?
+  memorySettings    Json?
+  conversationHistory Int      @default(20)
+  toolPermissions   Json?
+  webAccess         Boolean  @default(false)
+  imageGeneration   Boolean  @default(false)
+  fileUnderstanding Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model Personality {
+  id                   String   @id @default(uuid())
+  botId                String   @unique
+  bot                  Bot      @relation(fields: [botId], references: [id])
+  shortDescription     String?
+  longDescription      String?
+  tone                String?
+  humor               String?
+  formality           String?
+  friendliness        String?
+  intelligenceStyle   String?
+  responseLength      String?
+  writingStyle        String?
+  conversationRules    String?
+  neverSay            String?
+  alwaysDo            String?
+  customSystemPrompt  String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
+
+model Memory {
+  id            String   @id @default(uuid())
+  botId         String
+  bot           Bot      @relation(fields: [botId], references: [id])
+  type          String   @default("short_term")
+  scope         String   @default("global")
+  key           String?
+  value         String
+  metadata      Json?
+  userId        String?
+  serverId      String?
+  channelId     String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Conversation {
+  id           String    @id @default(uuid())
+  botId        String
+  bot          Bot       @relation(fields: [botId], references: [id])
+  title        String?
+  userId       String?
+  serverId     String?
+  channelId    String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  messages     Message[]
+}
+
+model Message {
+  id             String       @id @default(uuid())
+  conversationId  String
+  conversation   Conversation @relation(fields: [conversationId], references: [id])
+  sender         String       @default("user")
+  content        String
+  metadata       Json?
+  latencyMs      Int?
+  createdAt      DateTime     @default(now())
+}
+
+model DiscordServer {
+  id             String       @id @default(uuid())
+  ownerId        String?
+  owner          User?        @relation(fields: [ownerId], references: [id])
+  discordServerId String       @unique
+  name           String
+  icon           String?
+  memberCount    Int?
+  status         String       @default("connected")
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  settings       ServerSetting?
+  botServers     BotServer[]
+}
+
+model ServerSetting {
+  id                  String        @id @default(uuid())
+  serverId            String        @unique
+  server              DiscordServer @relation(fields: [serverId], references: [id])
+  prefix              String        @default("!")
+  mentionResponses    Boolean       @default(true)
+  dmResponses         Boolean       @default(false)
+  autoReplies         Boolean       @default(false)
+  welcomeMessage      String?
+  goodbyeMessage      String?
+  moderationMode      String        @default("standard")
+  channelRestrictions Json?
+  roleRestrictions    Json?
+  userAllowlist       Json?
+  userBlocklist       Json?
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+}
+
+model BotServer {
+  id            String        @id @default(uuid())
+  botId         String
+  bot           Bot           @relation(fields: [botId], references: [id])
+  serverId      String
+  server        DiscordServer @relation(fields: [serverId], references: [id])
+  status        String        @default("pending")
+  enabled       Boolean       @default(true)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@unique([botId, serverId])
+}
+
+model Command {
+  id            String   @id @default(uuid())
+  botId         String
+  bot           Bot      @relation(fields: [botId], references: [id])
+  name          String
+  description   String?
+  commandType   String   @default("custom")
+  permissions   Json?
+  cooldown      Int?
+  isEnabled     Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Tool {
+  id            String   @id @default(uuid())
+  botId         String
+  bot           Bot      @relation(fields: [botId], references: [id])
+  name          String
+  description   String?
+  permissions   Json?
+  config        Json?
+  isEnabled     Boolean  @default(true)
+  usageLimit    Int?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Deployment {
+  id          String   @id @default(uuid())
+  botId       String
+  bot         Bot      @relation(fields: [botId], references: [id])
+  version     String
+  status      String   @default("pending")
+  target      String?
+  logs        String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model LogEntry {
+  id          String   @id @default(uuid())
+  botId       String?
+  bot         Bot?     @relation(fields: [botId], references: [id])
+  userId      String?
+  user        User?    @relation(fields: [userId], references: [id])
+  type        String
+  message     String
+  metadata    Json?
+  createdAt   DateTime @default(now())
+}
+
+model Analytics {
+  id             String   @id @default(uuid())
+  botId          String?
+  bot            Bot?     @relation(fields: [botId], references: [id])
+  date           DateTime @default(now())
+  messages       Int      @default(0)
+  activeUsers    Int      @default(0)
+  latencyMs      Int      @default(0)
+  aiUsage        Int      @default(0)
+  errorRate      Float    @default(0)
+  uptimePct      Float    @default(0)
+  createdAt      DateTime @default(now())
+}
+
+model Subscription {
+  id             String   @id @default(uuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id])
+  plan           String   @default("free")
+  status         String   @default("active")
+  currentPeriod  DateTime?
+  cancelAtPeriodEnd Boolean @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Usage {
+  id           String   @id @default(uuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id])
+  type         String
+  count        Int      @default(0)
+  metadata     Json?
+  createdAt    DateTime @default(now())
+}
+
+model ApiKey {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  name        String
+  keyHash     String
+  scopes      Json?
+  isRevoked   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

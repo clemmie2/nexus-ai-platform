@@ -1,0 +1,337 @@
+const fs = require('fs');
+const path = require('path');
+
+const html = `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nexus AI — Build an AI that lives on Discord</title>
+    <meta name="description" content="Create, configure, test, and deploy AI-powered Discord bots without coding from scratch." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <div class="container nav-wrap">
+          <div class="brand">
+            <div class="brand-mark">N</div>
+            <span>Nexus AI</span>
+          </div>
+          <nav class="main-nav">
+            <a href="#features">Features</a>
+            <a href="#how-it-works">How it works</a>
+            <a href="#pricing">Pricing</a>
+            <a href="#faq">FAQ</a>
+            <a href="/docs.html">Docs</a>
+          </nav>
+          <div class="nav-actions">
+            <a class="ghost-btn" href="/explore.html">Explore</a>
+            <a class="primary-btn" href="/dashboard.html">Create your AI</a>
+          </div>
+        </div>
+      </header>
+
+      <main>
+        <section class="hero">
+          <div class="container hero-grid">
+            <div class="hero-copy">
+              <span class="eyebrow">AI operating system for Discord</span>
+              <h1>Build an AI that lives on Discord.</h1>
+              <p>
+                Design intelligent Discord bots with personality, memory, tools, moderation, and deployment controls — without writing a single line of bot boilerplate.
+              </p>
+              <div class="cta-row">
+                <a class="primary-btn" href="/dashboard.html">Create your AI</a>
+                <a class="secondary-btn" href="/explore.html">Explore Bots</a>
+              </div>
+              <div class="hero-metrics">
+                <div><strong>12k+</strong><span>Communities</span></div>
+                <div><strong>1.3M</strong><span>AI messages</span></div>
+                <div><strong>99.9%</strong><span>Uptime</span></div>
+              </div>
+            </div>
+
+            <div class="hero-visual">
+              <div class="dashboard-panel glass-panel">
+                <div class="panel-topbar">
+                  <span class="dot red"></span>
+                  <span class="dot amber"></span>
+                  <span class="dot green"></span>
+                </div>
+                <div class="bot-composer">
+                  <div class="mini-user">
+                    <div class="avatar avatar-lg"></div>
+                    <div>
+                      <p class="small-label">Sage</p>
+                      <small>Community Concierge</small>
+                    </div>
+                  </div>
+                  <div class="chat-bubble assistant">
+                    <span class="badge">AI</span>
+                    Hello, welcome! I can answer questions, support moderation, and guide players into the right channels.
+                  </div>
+                  <div class="chat-bubble user">When do we host the next event?</div>
+                  <div class="chat-bubble assistant">This Friday at 7:30 PM. I also added a reminder to the #announcements channel.</div>
+                </div>
+              </div>
+              <div class="floating-card card-a glass-panel">
+                <p>Memory + moderation enabled</p>
+                <strong>Auto-responding</strong>
+              </div>
+              <div class="floating-card card-b glass-panel">
+                <p>Latency</p>
+                <strong>138ms</strong>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="feature-strip">
+          <div class="container feature-grid">
+            <div class="feature-pill">Discord OAuth Login</div>
+            <div class="feature-pill">AI Personality Engine</div>
+            <div class="feature-pill">Memory Layer</div>
+            <div class="feature-pill">Bot Deployments</div>
+            <div class="feature-pill">Usage Analytics</div>
+          </div>
+        </section>
+
+        <section id="features" class="content-section">
+          <div class="container section-header">
+            <span class="eyebrow">Built for serious communities</span>
+            <h2>Everything needed to ship a branded AI bot.</h2>
+          </div>
+          <div class="container card-grid three-col">
+            <article class="glass-panel info-card">
+              <div class="icon">✦</div>
+              <h3>Visual bot builder</h3>
+              <p>Configure identity, behavior, commands, permissions, and personality in a guided interface.</p>
+            </article>
+            <article class="glass-panel info-card">
+              <div class="icon">◌</div>
+              <h3>AI control center</h3>
+              <p>Set context window, prompts, tool access, memory rules, and safety constraints from one panel.</p>
+            </article>
+            <article class="glass-panel info-card">
+              <div class="icon">◎</div>
+              <h3>Discord-native deploys</h3>
+              <p>Create secure bot flows, invite links, status monitoring, logs, channel rules, and role restrictions.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="how-it-works" class="content-section alt-section">
+          <div class="container section-header">
+            <span class="eyebrow">How it works</span>
+            <h2>Your bot lifecycle, simplified.</h2>
+          </div>
+          <div class="container steps-grid">
+            <div class="step glass-panel">
+              <span class="step-number">01</span>
+              <h3>Create AI</h3>
+              <p>Describe your bot, choose a style, and define a memorable identity for your server.</p>
+            </div>
+            <div class="step glass-panel">
+              <span class="step-number">02</span>
+              <h3>Customize</h3>
+              <p>Adjust tone, behavior, safeguards, memory, tools, and the logic behind responses.</p>
+            </div>
+            <div class="step glass-panel">
+              <span class="step-number">03</span>
+              <h3>Test</h3>
+              <p>Use the built-in playground to chat live before exposing the bot to your Discord community.</p>
+            </div>
+            <div class="step glass-panel">
+              <span class="step-number">04</span>
+              <h3>Deploy</h3>
+              <p>Invite the bot to servers, monitor logs, and keep improving with real analytics and memory.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="content-section">
+          <div class="container section-header">
+            <span class="eyebrow">Popular AI personas</span>
+            <h2>Launch a bot with a purpose.</h2>
+          </div>
+          <div class="container character-grid">
+            <article class="glass-panel character-card">
+              <div class="avatar avatar-sm one"></div>
+              <h3>Community Guide</h3>
+              <p>Welcomes members, answers onboarding questions, and routes requests to the right channels.</p>
+            </article>
+            <article class="glass-panel character-card">
+              <div class="avatar avatar-sm two"></div>
+              <h3>Gaming Buddy</h3>
+              <p>Tracks raid schedules, responds with personality, and handles team coordination.</p>
+            </article>
+            <article class="glass-panel character-card">
+              <div class="avatar avatar-sm three"></div>
+              <h3>Developer Helper</h3>
+              <p>Explains bugs, summaries issues, and assists with build readiness in development servers.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="content-section alt-section">
+          <div class="container split-panel">
+            <div>
+              <span class="eyebrow">Discord integration</span>
+              <h2>Connect to servers without compromising security.</h2>
+              <ul class="check-list">
+                <li>Secure OAuth2 connection flow</li>
+                <li>Bot invitations and server permissions mapping</li>
+                <li>Role and channel-specific behavior controls</li>
+                <li>Real-time status, latency, and uptime metrics</li>
+              </ul>
+            </div>
+            <div class="glass-panel stat-card">
+              <div class="stat-row"><span>Bot status</span><strong>Online</strong></div>
+              <div class="stat-row"><span>Servers</span><strong>84</strong></div>
+              <div class="stat-row"><span>Members</span><strong>24k</strong></div>
+              <div class="stat-row"><span>Latency</span><strong>138ms</strong></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="content-section">
+          <div class="container section-header">
+            <span class="eyebrow">AI capabilities</span>
+            <h2>Go beyond simple replies.</h2>
+          </div>
+          <div class="container card-grid three-col">
+            <article class="glass-panel info-card">
+              <h3>Memory</h3>
+              <p>Keep conversation context, user preferences, and server-specific learning across time.</p>
+            </article>
+            <article class="glass-panel info-card">
+              <h3>Tools</h3>
+              <p>Search the web, fetch external data, moderate activity, summarize files, and call custom APIs.</p>
+            </article>
+            <article class="glass-panel info-card">
+              <h3>Image support</h3>
+              <p>Enable visual generation and embedded responses in the Discord experience with modern components.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="content-section alt-section">
+          <div class="container section-header">
+            <span class="eyebrow">Developer API</span>
+            <h2>Ship faster with a clean platform API.</h2>
+          </div>
+          <div class="container api-shell glass-panel">
+            <pre><code>GET /api/bots
+POST /api/bots
+POST /api/ai/chat
+GET /api/servers
+PATCH /api/servers/:id/settings</code></pre>
+            <div class="api-actions">
+              <a class="primary-btn" href="/docs.html">Read docs</a>
+              <a class="ghost-btn" href="/dashboard.html">Open dashboard</a>
+            </div>
+          </div>
+        </section>
+
+        <section id="pricing" class="content-section">
+          <div class="container section-header">
+            <span class="eyebrow">Simple pricing</span>
+            <h2>Choose a plan that fits your adoption level.</h2>
+          </div>
+          <div class="container pricing-grid">
+            <article class="glass-panel pricing-card">
+              <span class="plan-name">Free</span>
+              <h3>$0<span>/mo</span></h3>
+              <ul>
+                <li>1 bot</li>
+                <li>Basic personality</li>
+                <li>Limited AI usage</li>
+              </ul>
+              <a class="secondary-btn" href="/dashboard.html">Get started</a>
+            </article>
+            <article class="glass-panel pricing-card featured">
+              <span class="plan-name">Creator</span>
+              <h3>$29<span>/mo</span></h3>
+              <ul>
+                <li>Unlimited bot drafts</li>
+                <li>Advanced personality controls</li>
+                <li>Priority analytics</li>
+              </ul>
+              <a class="primary-btn" href="/dashboard.html">Start building</a>
+            </article>
+            <article class="glass-panel pricing-card">
+              <span class="plan-name">Pro</span>
+              <h3>$79<span>/mo</span></h3>
+              <ul>
+                <li>Advanced tools</li>
+                <li>Voice & image features</li>
+                <li>Private bots</li>
+              </ul>
+              <a class="secondary-btn" href="/dashboard.html">Upgrade</a>
+            </article>
+          </div>
+        </section>
+
+        <section id="faq" class="content-section alt-section faq-section">
+          <div class="container section-header">
+            <span class="eyebrow">FAQ</span>
+            <h2>Questions from creators and community teams.</h2>
+          </div>
+          <div class="container faq-list">
+            <details class="glass-panel faq-item" open>
+              <summary>Do I need to code a Discord bot from scratch?</summary>
+              <p>No. Nexus AI gives you a visual builder and AI configuration layer so you can launch a bot without writing bot boilerplate.</p>
+            </details>
+            <details class="glass-panel faq-item">
+              <summary>Can I use my own servers and roles?</summary>
+              <p>Yes. You can configure per-server permissions, moderation rules, channel restrictions, and invitation flows for each community.</p>
+            </details>
+            <details class="glass-panel faq-item">
+              <summary>Can I test the bot before deployment?</summary>
+              <p>Yes. The built-in playground lets you send sample prompts and inspect responses, latency, and memory behavior.</p>
+            </details>
+          </div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <div class="container footer-grid">
+          <div>
+            <div class="brand">
+              <div class="brand-mark">N</div>
+              <span>Nexus AI</span>
+            </div>
+            <p>Create intelligent Discord experiences with modern AI tooling and deployment controls.</p>
+          </div>
+          <div>
+            <h4>Product</h4>
+            <ul>
+              <li><a href="#features">Features</a></li>
+              <li><a href="#pricing">Pricing</a></li>
+              <li><a href="/explore.html">Explore</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Developers</h4>
+            <ul>
+              <li><a href="/docs.html">Docs</a></li>
+              <li><a href="/dashboard.html">Dashboard</a></li>
+              <li><a href="/pricing.html">Plans</a></li>
+            </ul>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script src="/js/main.js"></script>
+  </body>
+</html>
+`;
+
+fs.writeFileSync(path.join(__dirname, '../public/index.html'), html);
+
+console.log('Landing page generated:', path.join(__dirname, '../public/index.html'));

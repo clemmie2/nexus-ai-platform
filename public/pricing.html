@@ -1,0 +1,82 @@
+const fs = require('fs');
+const path = require('path');
+
+const html = `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pricing | Nexus AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body class="page-shell pricing-page">
+    <header class="topbar">
+      <div class="container nav-wrap">
+        <div class="brand">
+          <div class="brand-mark">N</div>
+          <span>Nexus AI</span>
+        </div>
+        <nav class="main-nav">
+          <a href="/index.html">Home</a>
+          <a href="/explore.html">Explore</a>
+          <a href="/docs.html">Docs</a>
+        </nav>
+        <div class="nav-actions">
+          <a class="ghost-btn" href="/dashboard.html">Dashboard</a>
+          <a class="primary-btn" href="/dashboard.html">Create your AI</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="container pricing-section">
+      <div class="section-header center">
+        <span class="eyebrow">Pricing</span>
+        <h2>Choose the plan to match your AI community.</h2>
+      </div>
+      <div class="container pricing-grid large-width">
+        <article class="glass-panel pricing-card">
+          <span class="plan-name">Free</span>
+          <h3>$0<span>/mo</span></h3>
+          <ul>
+            <li>1 active bot</li>
+            <li>Basic personality editor</li>
+            <li>Basic analytics</li>
+          </ul>
+          <button class="secondary-btn">Current</button>
+        </article>
+        <article class="glass-panel pricing-card featured">
+          <span class="plan-name">Creator</span>
+          <h3>$29<span>/mo</span></h3>
+          <ul>
+            <li>Unlimited drafts</li>
+            <li>Longer memory</li>
+            <li>Advanced AI settings</li>
+            <li>Priority support</li>
+          </ul>
+          <button class="primary-btn">Upgrade</button>
+        </article>
+        <article class="glass-panel pricing-card">
+          <span class="plan-name">Pro</span>
+          <h3>$79<span>/mo</span></h3>
+          <ul>
+            <li>Advanced tools</li>
+            <li>Image + voice</li>
+            <li>Private bots</li>
+            <li>Team collaboration</li>
+          </ul>
+          <button class="secondary-btn">Upgrade</button>
+        </article>
+      </div>
+    </main>
+
+    <script src="/js/main.js"></script>
+  </body>
+</html>
+`;
+
+fs.writeFileSync(path.join(__dirname, '../public/pricing.html'), html);
+
+console.log('Pricing page generated:', path.join(__dirname, '../public/pricing.html'));
